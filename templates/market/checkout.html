@@ -1,0 +1,148 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+    <div class="p-4">
+        <h3>items: {{count_cart_items}}</h3>
+        <h3>total: {{total}}</h3>
+    </div>
+
+    <div class="user-data p-4" id="form-wrapper">
+        <form id="form" method="post">
+            {% csrf_token %}
+
+            <div id="shipping-info">
+                <label for="address">Address: </label>
+                <input type="text" name="address" id="address" max_length="200" required>
+
+                <label for="city">City: </label>
+                <input type="text" name="city" id="city" max_length="200" required>
+
+                <label for="state">State: </label>
+                <input type="text" name="state" id="state" max_length="200" required>
+
+                <label for="zipcode">Zipcode: </label>
+                <input type="text" name="zipcode" id="zipcode" max_length="200" required>
+
+            </div>
+            <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+        </form>
+
+    </div>
+
+    <br>
+    <div class="box-element hidden" id="payment-info">
+        <small>Paypal Options</small>
+        <div id="paypal-button-container"></div>
+    </div>
+
+    <div class="cards p-4">
+    {% for item in items %}
+        <div class="card p-4">
+
+            <img src="{{item.product.imageURL}}" alt="">
+            <h4>{{item.product.name}}</h4>
+            <h4>{{item.quantity}}</h4>
+
+        </div>
+    {% endfor %}
+    </div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AVxzCvCm0uWGc8tg9xqDFU_ISVMs7-oEYRKpQTkIUZZwUKfWndhXn3GlrVgQzRrMWwIkBn4D6PJXc7lr&currency=USD&disable-funding=credit"></script>
+        
+    
+    <script>
+        var total = '{{order.get_cart_total}}';
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            style: {
+                color: 'blue',
+                shape: 'rect',
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: parseFloat(total).toFixed(2)
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    submitFormData();
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+
+
+    <script type="text/javascript">
+        var shipping = '{{order.shipping}}';
+
+        if (shipping == 'False') {
+            document.getElementById('shipping-info').innerHTML= '';
+            document.getElementById('form-wrapper').classList.add("hidden");
+            document.getElementById('payment-info').classList.remove("hidden");
+        }
+
+        var form = document.getElementById('form');
+        csrftoken = form.getElementsByTagName("input")[0].value;
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            console.log("Form Submitted...");
+            document.getElementById('form-button').classList.add("hidden");
+            document.getElementById('payment-info').classList.remove("hidden");
+        });
+
+        function submitFormData() {
+            console.log("Payment button clicked");
+
+            var shippingInfo = {
+                'address': null,
+                'city': null,
+                'state': null,
+                'zipcode': null,
+            }
+
+            if (shipping != 'False') {
+                shippingInfo.address = form.address.value;
+                shippingInfo.city = form.city.value;
+                shippingInfo.state = form.state.value;
+                shippingInfo.zipcode = form.zipcode.value;
+            }
+
+            var url = '/process_order/';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({
+                    'total': total,
+                    'shipping': shippingInfo
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+                alert('Transaction completed');
+
+                cart = {};
+                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
+
+                window.location.href = "{% url 'store' %}";
+            })
+        }
+    </script>
+
+
+{% endblock content %}

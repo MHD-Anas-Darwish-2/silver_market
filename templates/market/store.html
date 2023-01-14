@@ -1,0 +1,56 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="search-box container">
+    <form method="GET">
+        <input type="text" name="q" placeholder="Search...">
+        <input type="number" name="start_price" placeholder="start price">
+        <input type="number" name="end_price" placeholder="end price">
+        <input type="submit" value="search">
+    </form>
+</div>
+         <section class="wrapper">
+             <div class="container-fostrap">
+                <h1 class="heading">
+                    Silver Market
+                </h1>
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            {% for product in products %}
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="card">
+                                        <div class="img-card">
+                                            <img src="{{product.imageURL}}" />
+                                        </div>
+                                    <div class="card-content">
+                                        <h4 class="card-title">
+                                            <div> {{product.name}}</div>
+                                        </h4>
+                                        <h5 class="d-inline">${{product.price}}</h5>
+                                        <a style="position:absolute; right:10px; bottom: 60px;" href="{% url 'product' product.slug %}" class="btn btn-outline-dark">
+                                            View
+                                        </a>
+                                        {% if request.user.is_superuser %}
+                                            <button item="{{product.slug}}" model="product" class="delete-item btn btn-outline-danger">
+                                                Remove
+                                            </button>
+                                            <a href="{% url 'update_product' product.slug %}" class="btn btn-outline-info">
+                                                Update
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-read-more">
+                                        <button action="add" product_id="{{product.id}}" class="update-cart btn btn -link btn-block">add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+{% endblock content %}
+    

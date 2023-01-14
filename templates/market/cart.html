@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h3>total: ${{total}}</h3>
+<h3>items: {{count_cart_items}}</h3>
+
+<br>
+
+{% for item in items %}
+<div class="card">
+    <h2 class="text-info">{{item.quantity}}</h2>
+    <img src="{{item.product.imageURL}}" alt="">
+    <h3>{{item.product.name}}</h3>
+    <h4>${{item.product.price}}</h4>
+    <h5>{{item.product.discount}}</h5>
+    <a href="{% url 'product' item.product.slug %}"></a>
+    <button action="add" product_id="{{item.product.id}}" class="update-cart btn btn-link btn-block">INCREASE</button>
+    <button action="remove" product_id="{{item.product.id}}" class="update-cart btn btn-link btn-block">DECREASE</button>
+    
+</div>
+{% endfor %}
+    
+           
+{% endblock content %}

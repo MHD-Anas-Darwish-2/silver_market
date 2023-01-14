@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+    <h3>{{order.user}}</h3>
+
+    <h3>{{order.user.email}}</h3>
+    <!-- <h3>{{order.complete}}</h3> -->
+    <div style="text-align:left;" class="card-read-more">
+        {% if order.complete %}
+        <h5 style="padding-top: 7px; padding-left: 10px;" class="text-success">
+            <b>Completed</b>
+        </h5>
+        {% else %}
+            <h5 style="padding-top: 7px; padding-left: 10px;" class="text-danger">
+                <b>Not Complete</b>
+            </h5>
+        {% endif %}
+    </div>
+    <h3>{{order.transaction_id}}</h3>
+    <h3>{{order.date_orderd}}</h3>
+
+    {% for order_item in order_items %}
+        <img width="200px" src="{{order_item.product.imageURL}}" alt="">
+        <h3>{{order_item.product.name}}</h3>
+        <h3>${{order_item.product.price}} <span class="text-danger">%{{order_item.product.discount}}</span></h3>
+        
+        <h3>${{order_item.product.final_price}}</h3>
+        <h3>{{order_item.quantity}}</h3>
+        <h3>{{order_item.date_added}}</h3>
+    {% endfor %}  
+
+    {% if shipping_address %}
+        <hr>
+        <h3>address: {{shipping_address.address}}</h3>
+        <h3>city: {{shipping_address.city}}</h3>
+        <h3>state: {{shipping_address.state}}</h3>
+        <h3>zipcode {{shipping_address.zipcode}}</h3>
+        <h3>date addes: {{shipping_address.date_added}}</h3>
+    {% endif %}
+
+{% endblock content %}
+    

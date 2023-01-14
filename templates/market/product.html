@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="p-4">
+    <img src="{{product.imageURL}}" alt="">
+    <div>
+        <h1>{{product.name}}</h1> <!-- name -->
+        <h3>{{product.price|floatformat:2}}</h3> <!-- price -->
+        <h3>{{product.discount}}</h3> <!-- discount -->
+        <p>{{product.description}}</p> <!-- description -->
+        <ul>
+            {% for category in product.category.all %}
+                <li>{{category}}</li>    
+            {% endfor %}
+        </ul> <!-- category -->
+
+    </div>
+    {% if request.user.is_superuser %}
+        <button item="{{product.slug}}" model="product" class="delete-item btn btn-outline-danger">
+            Remove
+        </button>
+        <a href="{% url 'update_product' product.slug %}" class="btn btn-success">
+            Update
+        </a>
+    {% endif %}
+    <button action="add" product_id="{{product.id}}" class="update-cart btn btn-info">add to cart</button>
+</div>
+{% endblock content %}
+

@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'create_category' %}" class="btn btn-outline-info">
+                Add Category
+            </a>
+        </div>
+        {% for category in categories %}
+            <div class="row">
+                <h3>{{category.name}}</h3>
+
+                <button item="{{category.id}}" model="category" class="delete-item btn btn-outline-danger">
+                    Remove
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
+    

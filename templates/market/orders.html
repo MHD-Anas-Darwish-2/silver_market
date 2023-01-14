@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<section class="wrapper">
+    <div class="container-fostrap">
+       <h1 class="heading">
+           Orders
+       </h1>
+       <div class="content">
+            <div class="container">
+                <div class="row">
+                {% for order in orders %}
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div style="position: relative;" class="card-content">
+                                <h4 class="card-title">
+                                    <div>{{order.user}}</div>
+                                </h4>
+                                <h5 class="d-inline">{{order.date_orderd}}</h5>
+                                <br>
+                                <h5 class="d-inline text-warning">{{order.transaction_id}}</h5>
+                                <a style="position:absolute; right:10px; bottom: 10px;" href="{% url 'order' order.id %}" class="btn btn-outline-dark">
+                                    View
+                                </a>
+                            </div>
+                            <div style="text-align:left;" class="card-read-more">
+                                {% if order.complete %}
+                                <h5 style="padding-top: 7px; padding-left: 10px;" class="text-success">
+                                    <b>Completed</b>
+                                </h5>
+                                {% else %}
+                                    <h5 style="padding-top: 7px; padding-left: 10px;" class="text-danger">
+                                        <b>Not Complete</b>
+                                    </h5>
+                                {% endif %}
+                            </div>
+                       </div>
+                   </div>
+                   {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+        
+{% endblock content %}
+    
