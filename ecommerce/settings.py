@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-atys%p&4lcni%%i%=ne!2z%qqaw79wa%23ryl(-k*bo+0esl62
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['anasdarm.pythonanywhere.com']
+ALLOWED_HOSTS = ['*','anasdarm.pythonanywhere.com']
 
 
 # Application definition
@@ -165,9 +165,15 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 
 # send email
+f = open('mail.pass', 'r')
+mailpass = f.read()
+f.close()
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_PORT = 587 
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = mailpass.split(',')[0]
+EMAIL_HOST_PASSWORD = mailpass.split(',')[1]
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True 
