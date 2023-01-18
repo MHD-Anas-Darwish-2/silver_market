@@ -48,7 +48,7 @@
     {% endfor %}
     </div>
 
-        <!-- Sample PayPal credentials (client-id) are included -->
+        {% comment %} <!-- Sample PayPal credentials (client-id) are included -->
         <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&intent=capture&enable-funding=venmo" data-sdk-integration-source="integrationbuilder"></script>
         <script>
           const paypalButtonsComponent = paypal.Buttons({
@@ -101,9 +101,9 @@
         </script>
       </body>
     </html>
+ {% endcomment %}
 
-
-    {% comment %} <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&disable-funding=credit"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&disable-funding=credit"></script>
         
     
     <script>
@@ -135,7 +135,7 @@
                 });
             }
         }).render('#paypal-button-container');
-    </script> {% endcomment %}
+    </script>
 
 
     <script type="text/javascript">
