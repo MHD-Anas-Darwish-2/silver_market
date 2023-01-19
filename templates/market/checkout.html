@@ -103,8 +103,8 @@
     </html>
  {% endcomment %}
 
-    <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&disable-funding=credit"></script>
-        
+    {% comment %} <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&disable-funding=credit"></script> {% endcomment %}
+    <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&intent=capture&enable-funding=venmo" data-sdk-integration-source="integrationbuilder"></script>
     
     <script>
         var total = '{{order.get_cart_total}}';
