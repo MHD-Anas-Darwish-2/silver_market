@@ -202,8 +202,8 @@ def process_order(request):
         transaction_id = datetime.now().timestamp()
         data = json.loads(request.body)
 
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        user = request.user
+        order, created = Order.objects.get_or_create(user=user, complete=False)
             
         total = float(data['total'])
         order.transaction_id = transaction_id
@@ -219,7 +219,7 @@ def process_order(request):
 
         if order.shipping == True:
             ShippingAddress.objects.create(
-                customer=customer,
+                user=user,
                 order=order,
                 address=data['shipping']['address'],
                 city=data['shipping']['city'],
