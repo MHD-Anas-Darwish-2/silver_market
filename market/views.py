@@ -208,24 +208,26 @@ def process_order(request):
         total = float(data['total'])
         order.transaction_id = transaction_id
 
-        if total == order.get_cart_total:
+        if float(total) == float(order.get_cart_total):
             order.complete = True
 
+            # ADD quantity to number of sales
             order_items = OrderItem.objects.filter(order=order)
             for order_item in order_items:
-                order_item.product.number_of_sales += order_item.quantity
-                order_item.save()
+                product = order_item.product
+                product.number_of_sales += order_item.quantity
+                product.save()
         order.save()
 
-        if order.shipping == True:
-            ShippingAddress.objects.create(
-                user=user,
-                order=order,
-                address=data['shipping']['address'],
-                city=data['shipping']['city'],
-                state=data['shipping']['state'],
-                zipcode=data['shipping']['zipcode'],
-            )
+        
+        ShippingAddress.objects.create(
+            user=user,
+            order=order,
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=data['shipping']['state'],
+            zipcode=data['shipping']['zipcode'],
+        )
 
         return JsonResponse('Payment complete!', safe=False)
     else:
