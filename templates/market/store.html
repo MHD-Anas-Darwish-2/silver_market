@@ -1,56 +1,105 @@
 {% extends "main.html" %}
 
 {% block content %}
-<div class="search-box container">
-    <form method="GET">
-        <input type="text" name="q" placeholder="Search...">
-        <input type="number" name="start_price" placeholder="start price">
-        <input type="number" name="end_price" placeholder="end price">
-        <input type="submit" value="search">
-    </form>
-</div>
-         <section class="wrapper">
-             <div class="container-fostrap">
-                <h1 class="heading">
-                    Silver Market
-                </h1>
+    <h1 class="page-label heading">Silver Market</h1>
+    <div class="store">
+        <div class="search-box container">
+            <form method="GET">
+                <input type="text" name="q" placeholder="Search...">
+                <input type="number" name="start_price" placeholder="start price">
+                <input type="number" name="end_price" placeholder="end price">
+                <input type="submit" value="search">
+            </form>
+        </div>
+
+        <div class="cards">
+            {% for product in products %}
+            <div class="card">
+                <a href="{% url 'product' product.slug %}">
+                    <img src="{{product.imageURL}}" alt="">
+                </a>
                 <div class="content">
-                    <div class="container">
-                        <div class="row">
-                            {% for product in products %}
-                            <div class="col-xs-12 col-sm-4">
-                                <div class="card">
-                                        <div class="img-card">
-                                            <img src="{{product.imageURL}}" />
-                                        </div>
-                                    <div class="card-content">
-                                        <h4 class="card-title">
-                                            <div> {{product.name}}</div>
-                                        </h4>
-                                        <h5 class="d-inline">${{product.price}}</h5>
-                                        <a style="position:absolute; right:10px; bottom: 60px;" href="{% url 'product' product.slug %}" class="btn btn-outline-dark">
-                                            View
+                    <div>
+                        <h4 class="title">{{product.name}}</h4>
+                        {% if product.discount %}
+                            <h3 class="price">${{product.final_price|floatformat:2}}</h3>
+                            <p class="old-price">${{product.price|floatformat:2}}</p>
+                            <p class="discount">{{product.discount}}% off</p>
+                        {% else %}
+                            <h3 class="price">${{product.price|floatformat:2}}</h3>
+                        {% endif %}
+                        {% if request.user.is_superuser %}
+                            <button item="{{product.slug}}" model="product" class="delete-item text-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </button>
+                            <a href="{% url 'update_product' product.slug %}" class="text-info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <button action="add" product_id="{{product.id}}" class="update-cart add-to-cart">add to cart</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% comment %} <div class="container">
+
+    <section class="wrapper">
+        <div class="container-fostrap">
+            <h1 class="heading">
+                Silver Market
+            </h1>
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="card">
+                                    <div class="img-card">
+                                        <img src="{{product.imageURL}}" />
+                                    </div>
+                                <div class="card-content">
+                                    <h4 class="card-title">
+                                        <div> {{product.name}}</div>
+                                    </h4>
+                                    {% if product.discount %}
+                                        <h5 class="d-inline" size="">${{product.price|floatformat:2}}</h5>
+                                        <h5 class="d-inline">${{product.final_price|floatformat:2}}</h5>
+                                        <h5 style="position: absolute; top: -15px; right: -15px; font-weight: bold;color: red; border: 3px solid red; border-radius: 50%; padding: 16px 10px;" class="d-inline">Salle: %{{product.discount}}</h5>
+                                        {% else %}
+                                        <h5 class="d-inline" style="font-style: italic;">${{product.price|floatformat:2}}</h5>
+                                    {% endif %}
+                                    <br>
+                                    <a style="position:absolute; right:10px; bottom: 60px;" href="{% url 'product' product.slug %}" class="btn btn-outline-dark">
+                                        View
+                                    </a>
+                                    {% if request.user.is_superuser %}
+                                        <button item="{{product.slug}}" model="product" class="delete-item btn btn-outline-danger">
+                                            Remove
+                                        </button>
+                                        <a href="{% url 'update_product' product.slug %}" class="btn btn-outline-info">
+                                            Update
                                         </a>
-                                        {% if request.user.is_superuser %}
-                                            <button item="{{product.slug}}" model="product" class="delete-item btn btn-outline-danger">
-                                                Remove
-                                            </button>
-                                            <a href="{% url 'update_product' product.slug %}" class="btn btn-outline-info">
-                                                Update
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                    <div class="card-read-more">
-                                        <button action="add" product_id="{{product.id}}" class="update-cart btn btn -link btn-block">add to cart</button>
-                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="card-read-more">
+                                    <button action="add" product_id="{{product.id}}" class="update-cart btn btn-link btn-block">add to cart</button>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </section>
-        
+        </div>
+    </section>
+     {% endcomment %}
 {% endblock content %}
     

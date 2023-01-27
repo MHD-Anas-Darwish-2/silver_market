@@ -14,7 +14,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     slug = models.SlugField(max_length=200, null=False, unique=True, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2)
-    discount = models.DecimalField(max_digits=7, decimal_places=2)
+    discount = models.SmallIntegerField(default=0)
     description = models.TextField(null=True)
     number_of_sales = models.SmallIntegerField(default=0)
     category = models.ManyToManyField(Category)
@@ -68,7 +68,7 @@ class OrderItem(models.Model):
 
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
+        total = self.product.final_price() * self.quantity
         return total
 
 class ShippingAddress(models.Model):

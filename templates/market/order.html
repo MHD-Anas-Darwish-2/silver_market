@@ -19,14 +19,22 @@
     </div>
     <h3>{{order.transaction_id}}</h3>
     <h3>{{order.date_orderd}}</h3>
-
+    <hr>
     {% for order_item in order_items %}
         <img width="200px" src="{{order_item.product.imageURL}}" alt="">
         <h3>{{order_item.product.name}}</h3>
-        <h3>${{order_item.product.price}} <span class="text-danger">%{{order_item.product.discount}}</span></h3>
         
-        <h3>${{order_item.product.final_price}}</h3>
-        <h3>{{order_item.quantity}}</h3>
+        {% if order_item.product.discount %}
+            <h3>
+                price: ${{order_item.product.price}} 
+                <span class="text-danger">discount: %{{order_item.product.discount}}</span>
+            </h3>
+            <h3>final salary: ${{order_item.product.final_price}}</h3>
+        {% else %}
+            <h3>price: ${{order_item.product.price}}</h3>
+        {% endif %}
+        
+        <h3>quantity: {{order_item.quantity}}</h3>
         <h3>{{order_item.date_added}}</h3>
     {% endfor %}  
 
@@ -36,7 +44,7 @@
         <h3>city: {{shipping_address.city}}</h3>
         <h3>state: {{shipping_address.state}}</h3>
         <h3>zipcode {{shipping_address.zipcode}}</h3>
-        <h3>date addes: {{shipping_address.date_added}}</h3>
+        <h3>date added: {{shipping_address.date_added}}</h3>
     {% endif %}
 
 {% endblock content %}

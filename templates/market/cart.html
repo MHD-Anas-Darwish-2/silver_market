@@ -1,10 +1,11 @@
 {% extends 'main.html' %}
 
 {% block content %}
-
-<h3>total: ${{total}}</h3>
-<h3>items: {{count_cart_items}}</h3>
-
+<br>
+<div class="card p-4 bg-secondary text-light">
+    <h3>total: ${{total|floatformat:2}}</h3>
+    <h3>items: {{count_cart_items}}</h3>
+</div>
 <br>
 
 {% for item in items %}

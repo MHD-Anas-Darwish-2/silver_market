@@ -4,7 +4,7 @@
 {% block content %}
     <div class="p-4">
         <h3>items: {{count_cart_items}}</h3>
-        <h3>total: {{total}}</h3>
+        <h3>total: ${{total|floatformat:2}}</h3>
     </div>
 
     <div class="user-data p-4" id="form-wrapper">

@@ -174,7 +174,7 @@ def delete_category(request, id):
 
 @user_passes_test(lambda u: u.is_superuser)
 def orders(request):
-    orders = Order.objects.all()
+    orders = Order.objects.filter(complete=True).order_by('-date_orderd')
 
     context = {
         'orders': orders,

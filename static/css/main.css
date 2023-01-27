@@ -1,5 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
 
+/* 
+320px — 480px: Mobile devices.
+481px — 768px: iPads, Tablets.
+769px — 1024px: Small screens, laptops.
+1025px — 1200px: Desktops, large screens.
+1201px and more — Extra large screens, TV.
+*/
+
+:root {
+  --main-dark-color: #06283D;
+  --secondary-dark-color: #256D85;
+  --main-light-color: #DFF6FF;
+  --secondary-light-color: #47B5FF;
+}
+
+
 html,
 body {
   -moz-box-sizing: border-box;
@@ -17,15 +33,21 @@ body {
   width: 100%;
 }
 
+.page-label {
+  text-align: center;
+}
+
 .container-fostrap {
   display: table-cell;
   padding: 1em;
   text-align: center;
 }
+
 .fostrap-logo {
   width: 100px;
   margin-bottom:15px
 }
+
 h1.heading {
   color: #fff;
   font-size: 1.15em;
@@ -97,6 +119,86 @@ h1.heading {
   font-weight:600;
   text-transform: uppercase
 }
-.hidden{
+.hidden {
 	display: none!important;
 }
+
+/* Store Cards */
+.store .cards {
+  padding-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 30px;
+  row-gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .store .cards {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 7px;
+  } 
+}
+
+@media (max-width: 480px) {
+  .store .cards {
+    grid-template-columns: 1fr;
+    row-gap: 7px;
+  } 
+}
+
+.store .cards .card > a {
+  color: black;
+
+}
+
+.store .cards .card img {
+  width : 100%;
+}
+
+.store .cards .card .content {
+  height: 100%;
+  display: flex;
+  align-content: space-between;
+  flex-wrap: wrap;  
+  /* flex-direction: column; */
+  padding: 10px;
+}
+
+.store .cards .card .content .title {
+  color: var(--main-dark-color);
+  width: 100%;
+}
+
+.store .cards .card .content .price {
+  display: inline;
+  color: var(--secondary-dark-color);
+}
+
+.store .cards .card .content .old-price {
+  display: inline;
+  color: var(--main-dark-color);
+  text-decoration: line-through;
+}
+
+.store .cards .card .content .discount {
+  display: inline;
+  color: red;
+  font-weight: 500;
+}
+
+.store .cards .card .content .delete-item {
+  background-color: white;
+  border-width: 0;
+}
+
+.store .cards .card .content .add-to-cart {
+  border: 0px;
+  background-color: var(--secondary-light-color);
+  color: white;
+  border-radius: 2px;
+  text-align: center;
+  width: 100%;
+  padding: 5px 0;
+}
+/* End Cards */
