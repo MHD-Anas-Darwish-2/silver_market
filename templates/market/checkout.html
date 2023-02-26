@@ -1,12 +1,40 @@
 {% extends 'main.html' %}
+{% load static %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}"> 
+{% endblock css %}
+    
 
 {% block content %}
-    <div class="p-4">
-        <h3>items: {{count_cart_items}}</h3>
-        <h3>total: ${{total|floatformat:2}}</h3>
-    </div>
+	<!-- Start Info -->
+	<div class="container">
+		<div class="info">
+			<h3>total: ${{total|floatformat:2}}</h3>
+			<h3>items: {{count_cart_items}}</h3>
+		</div>
+	</div>
+    <!-- End Info -->
 
+	<!-- Start Customer Info -->
+	<div class="container payment">
+        <div>
+            <div class="box-element hidden" id="payment-info">
+                <small>Paypal Options</small>
+                <div id="paypal-button-container"></div>
+            </div>
+        </div>
+		<form id="form" class="customer-info" method="POST">
+            {% csrf_token %}
+			<input type="text" name="address" id="address" max_length="200" placeholder="Address" required>
+			<input type="text" name="city" id="city" max_length="200" placeholder="City" required>
+			<input type="text" name="state" id="state" max_length="200" placeholder="State" required>
+			<input type="text" name="zipcode" id="zipcode" max_length="200" placeholder="Zipcode" required>
+			<input id="form-button" type="submit" value="Continue">
+		</form>
+	</div>
+	<!-- End Customer Info -->
+<!-- 
     <div class="user-data p-4" id="form-wrapper">
         <form id="form" method="post">
             {% csrf_token %}
@@ -26,7 +54,7 @@
 
             </div>
             <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-        </form>
+        </form> 
 
     </div>
 
@@ -35,18 +63,28 @@
         <small>Paypal Options</small>
         <div id="paypal-button-container"></div>
     </div>
-
-    <div class="cards p-4">
-    {% for item in items %}
-        <div class="card p-4">
-
-            <img src="{{item.product.imageURL}}" alt="">
-            <h4>{{item.product.name}}</h4>
-            <h4>{{item.quantity}}</h4>
-
-        </div>
-    {% endfor %}
-    </div>
+-->
+      
+	<!-- Start Cards -->
+	<div class="container">
+		<div class="cards">
+        {% for item in items %}
+			<div class="product-card">
+				<!-- <div class="badge">2 items</div> -->
+				<div class="product-tumb">
+					<img src="{{item.product.imageURL}}" alt="">
+				</div>
+				<div class="product-details">
+					<h4><a href="{% url 'product' item.product.slug %}">{{item.product.name}}</a></h4>
+					<div class="product-bottom-details">
+						<div class="product-count">{{item.quantity}} Items</div>
+					</div>
+				</div>
+			</div>
+        {% endfor %}
+		</div>
+	</div>
+	<!-- End Cards -->
 
     {% comment %} <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&disable-funding=credit"></script> {% endcomment %}
     <script src="https://www.paypal.com/sdk/js?client-id=ATIFwJR5tYylPX9_xuTSTnu2pbz70P_G2g3xz9G42u9L84AQ3C_V1pjljlwSja3IFa2L6-uBjMJvMC2j&currency=USD&intent=capture&enable-funding=venmo" data-sdk-integration-source="integrationbuilder"></script>

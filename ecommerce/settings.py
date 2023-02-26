@@ -42,10 +42,12 @@ INSTALLED_APPS = [
 
     # authentication
     'django.contrib.sites', # must
+    "allauth_ui",
     'allauth', # must
     'allauth.account', # must
     'allauth.socialaccount', # must
     'allauth.socialaccount.providers.google', # new
+    "widget_tweaks",
 
     # Apps
     'market.apps.MarketConfig',

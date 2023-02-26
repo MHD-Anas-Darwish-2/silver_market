@@ -17,7 +17,7 @@ def store(request):
     end_price = request.GET.get("end_price") if request.GET.get("end_price") else 10000000
 
     if query or start_price or end_price != 10000000: # if user search
-        products = Product.objects.filter((Q(name__icontains=query) | Q(description__icontains=query)) & Q(price__gte=start_price) & Q(price__lte=end_price))
+        products = Product.objects.filter((Q(name__icontains=query) | Q(description__icontains=query)) & Q(price__gte=start_price) & Q(price__lte=end_price)) # TODO replace price with final_price
     
     else:
         products = Product.objects.all().order_by('number_of_sales')[:10] # top 10 sales

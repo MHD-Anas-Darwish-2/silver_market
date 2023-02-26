@@ -1,26 +1,44 @@
 {% extends 'main.html' %}
+{% load static %}
 
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
+{% endblock css %}
+    
 {% block content %}
-<br>
-<div class="card p-4 bg-secondary text-light">
-    <h3>total: ${{total|floatformat:2}}</h3>
-    <h3>items: {{count_cart_items}}</h3>
+<!-- Start Info -->
+<div class="container">
+    <div class="info">
+        <h3>total: ${{total|floatformat:2}}</h3>
+        <h3>items: {{count_cart_items}}</h3>
+    </div>
 </div>
-<br>
+<!-- End Info -->
 
-{% for item in items %}
-<div class="card">
-    <h2 class="text-info">{{item.quantity}}</h2>
-    <img src="{{item.product.imageURL}}" alt="">
-    <h3>{{item.product.name}}</h3>
-    <h4>${{item.product.price}}</h4>
-    <h5>{{item.product.discount}}</h5>
-    <a href="{% url 'product' item.product.slug %}"></a>
-    <button action="add" product_id="{{item.product.id}}" class="update-cart btn btn-link btn-block">INCREASE</button>
-    <button action="remove" product_id="{{item.product.id}}" class="update-cart btn btn-link btn-block">DECREASE</button>
-    
+<!-- Start Cards -->
+<div class="container">
+    <div class="cards">
+        {% for item in items %}
+        <div class="product-card">
+            <div class="badge">{{item.quantity}} items</div>
+            <div class="product-tumb">
+                <img src="{{item.product.imageURL}}" alt="">
+            </div>
+            <div class="product-details">
+                <h4><a href="{% url 'product' item.product.slug %}">{{item.product.name}}</a></h4>
+                <div class="product-bottom-details">
+                    <div class="product-price">${{item.product.final_price}}</div>
+                    <div class="product-links">
+                        <button action="add" product_id="{{item.product.id}}" class="update-cart"><img src="{% static 'svg/triange.svg' %}" alt=""></button>
+                        <button action="remove" product_id="{{item.product.id}}" class="update-cart"><img src="{% static 'svg/triange.svg' %}" alt=""></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-{% endfor %}
-    
+<!-- End Cards -->
            
 {% endblock content %}
