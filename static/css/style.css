@@ -150,12 +150,14 @@ ul {
 
 /* Start Footer */
 .footer {
-    background-color: var(--sercondary-color);
-    padding: 5px 50px;
+    position: relative;
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
+    padding: 5px 50px;
     font-weight: bold;
     font-size: 1.6em;
+    background-color: var(--sercondary-color);
     color: white;
 }
 
